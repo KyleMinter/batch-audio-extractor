@@ -1,0 +1,98 @@
+﻿<Window x:Class="batch_audio_extractor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:batch_audio_extractor"
+        mc:Ignorable="d"
+        Title="Batch Audio Exporter" Height="450" Width="800">
+    <Grid>
+        <DockPanel>
+            <!-- Input/Output Dock -->
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Row="0">
+                    <TextBlock DockPanel.Dock="Left" Text="Input:" TextWrapping="Wrap" Width="45" Margin="10,10,10,0"/>
+                    <Button DockPanel.Dock="Right" x:Name="InputBrowseButton" Content="Browse..." Width="60" Margin="10,10,10,0" Click="BrowseButton_Click"/>
+                    <TextBox x:Name="InputTextBox" TextWrapping="Wrap" Margin="0,10,0,0" IsEnabled="False"/>
+                </DockPanel>
+
+                <DockPanel Grid.Row="1">
+                    <TextBlock DockPanel.Dock="Left" Text="Output:" TextWrapping="Wrap" Width="45" Margin="10,10,10,10"/>
+                    <Button DockPanel.Dock="Right" x:Name="OutputBrowseButton" Content="Browse..." Width="60" Margin="10,10,10,10" Click="BrowseButton_Click"/>
+                    <TextBox x:Name="OutputTextBox" TextWrapping="Wrap" Margin="0,10,0,10" IsEnabled="False"/>
+                </DockPanel>
+            </Grid>
+
+            <!--- Progress Dock -->
+            <DockPanel DockPanel.Dock="Bottom">
+                <Grid DockPanel.Dock="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Column="0" x:Name="ExportProgressCount" Text="0/0" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="5,5,5,5"/>
+                    <TextBlock Grid.Column="1" x:Name="ExportProgressPercent" Text="0%" TextWrapping="Wrap" HorizontalAlignment="Right" Margin="5,5,10,5"/>
+                </Grid>
+                <ProgressBar x:Name="ExportProgressBar" Margin="10,5,5,5"/>
+            </DockPanel>
+            
+            <!-- Main Content Grid -->
+            <Border BorderBrush="Gainsboro" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" MinWidth="300"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*" MinWidth="100"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Left Control Panel -->
+                    <StackPanel Grid.Column="0" Orientation="Vertical">
+                        <!-- Channel Control -->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Channels:" TextWrapping="Wrap" Margin="10,10,10,0" VerticalAlignment="Center"/>
+                            <RadioButton x:Name="StereoRadioButton" GroupName="channels" Margin="10,10,0,0" VerticalAlignment="Center" Checked="Channel_RadioButton_Checked" IsChecked="True">Stereo</RadioButton>
+                            <RadioButton x:Name="MonoRadioButton" GroupName="channels" Margin="10,10,0,0" VerticalAlignment="Center" Checked="Channel_RadioButton_Checked">Mono</RadioButton>
+                        </StackPanel>
+
+                        <!-- Sample Rate Control -->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Sample Rate:" TextWrapping="Wrap" Margin="10,10,10,0" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="SampleRate_ComboBox" SelectedValuePath="Content"  Margin="10,10,10,0" VerticalAlignment="Center" SelectionChanged="SampleRate_ComboBox_SelectionChanged">
+                                <ComboBoxItem>44.1 kHz</ComboBoxItem>
+                                <ComboBoxItem IsSelected="True">48.0 kHz</ComboBoxItem>
+                                <ComboBoxItem>88.0 kHz</ComboBoxItem>
+                                <ComboBoxItem>96.0 kHz</ComboBoxItem>
+                                <ComboBoxItem>192.0 kHz</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!-- Track Control -->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Tracks:" TextWrapping="Wrap" Margin="10,10,10,0" VerticalAlignment="Center"/>
+                            <RadioButton x:Name="AllTracksRadioButton" GroupName="tracks" Margin="10,10,0,0" VerticalAlignment="Center" Checked="Track_RadioButton_Checked" IsChecked="True">All Tracks</RadioButton>
+                            <RadioButton x:Name="TrackOneRadioButton" GroupName="tracks" Margin="10,10,0,0" VerticalAlignment="Center" Checked="Track_RadioButton_Checked">1st Track</RadioButton>
+                            <RadioButton x:Name="TrackTwoRadioButton" GroupName="tracks" Margin="10,10,0,0" VerticalAlignment="Center" Checked="Track_RadioButton_Checked">2nd Track</RadioButton>
+                        </StackPanel>
+
+                        <!-- Export Button -->
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="ExportButton" Content="Export" Width="50" Margin="10,10,10,10" Click="ExportButton_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Grid Splitter -->
+                    <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
+
+                    <!-- Right File List -->
+                    <ListBox Grid.Column="2" x:Name="FileListBox"/>
+                </Grid>
+            </Border>
+        </DockPanel>
+    </Grid>
+</Window>
